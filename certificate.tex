@@ -1,0 +1,125 @@
+\documentclass[landscape, a4paper, 12pt]{article}
+\usepackage[landscape, a4paper, margin=0cm, top=0cm, bottom=0cm, left=0cm, right=0cm]{geometry}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usetikzlibrary{calc, positioning}
+\usepackage{fontspec}
+\usepackage{xcolor}
+\usepackage{setspace}
+
+% ==========================================
+% FONT DEFINITIONS
+% ==========================================
+\setmainfont{Times New Roman}
+
+% Header Font
+\newfontfamily\certTitleFont[Scale=3.0, Color=231F20, WordSpace=2.0]{Old English Text MT}
+
+% Script Font
+\newfontfamily\certScriptFont[Scale=2.1, Color=404040]{Edwardian Script ITC} 
+
+% Name Font
+\newfontfamily\certNameFont[Scale=2.2, LetterSpace=4, Color=231F20]{Times New Roman}
+
+% Degree Font
+\newfontfamily\certDegreeFont[Scale=1.9, LetterSpace=2, Color=231F20]{Times New Roman}
+
+% Label Font
+\newfontfamily\certLabelFont[Scale=1.0, Color=404040]{Arial}
+
+\pagestyle{empty}
+
+\begin{document}
+\noindent 
+
+% ==========================================
+% BACKGROUND LAYER
+% ==========================================
+\begin{tikzpicture}[remember picture, overlay]
+    \node[inner sep=0pt, anchor=south west] at (current page.south west) {
+        \includegraphics[width=\paperwidth, height=\paperheight]{diploma_bg.png}
+    };
+\end{tikzpicture}
+
+% ==========================================
+% MAIN CONTENT LAYER
+% ==========================================
+\begin{tikzpicture}[remember picture, overlay]
+
+% ANCHOR CHANGED TO 'NORTH' (Top Center)
+% We pin the top of the text block to y=5.5cm (relative to center). 
+% This keeps the "University" header fixed while everything else pulls up underneath it.
+\node[anchor=north, text width=26cm, align=center] (maintext) at ($(current page.center) + (0, 6.9)$) {
+    \singlespacing 
+    
+    % Header
+    {\certTitleFont EAST\ \ STATE\ \ UNIVERSITY} \\[0.6cm] % Reduced gap below header
+    
+    % Intro
+    {\certScriptFont Upon the recommendation of the faculty and by virtue of the authority vested in them, the Board of Trustees has conferred upon} \\[0.5cm] % Reduced gap
+    
+    % Name
+    {\certNameFont \textbf{\MakeUppercase{[your name here]}}} \\[0.35cm] % Reduced gap
+    
+    % Connecting text
+    {\certScriptFont the degree of} \\[0.2cm] % Tight gap
+    
+    % Degree
+    {\certDegreeFont \textbf{\MakeUppercase{Doctor of Philosophy}}} \\[0.1cm] % Very tight gap
+    {\certScriptFont in} \\[0.35cm] % Very tight gap
+    {\certDegreeFont \textbf{\MakeUppercase{Document Forgery}}} \\[0.8cm] % Reduced gap before footer
+    
+    % Footer text (Now pulled up significantly)
+    {\certScriptFont together with all the rights, privileges, and honors thereunto appertaining.} \\
+    {\certScriptFont Given at the university this tenth day of May, Two Thousand and Twenty-Five.}
+};
+
+% ==========================================
+% SIGNATURES
+% ==========================================
+
+% --- President (Bottom Left) ---
+% Image position (User liked this, so we keep it)
+\coordinate (sigleft_img) at ($(current page.south west) + (7cm, 3.2cm)$);
+% Line position (Moved UP independently to y=4.0cm)
+\coordinate (sigleft_line) at ($(current page.south west) + (7cm, 4.0cm)$);
+
+% Line
+\draw[thick, color=gray!80] ($(sigleft_line) - (3cm, 0)$) -- ($(sigleft_line) + (3cm, 0)$);
+
+% Signature Image
+\node[anchor=south, yshift=-6mm] at (sigleft_img) { 
+    \includegraphics[width=6.5cm, keepaspectratio]{sig_president.png}
+};
+% Label (Anchored to the lower image coordinate to stay below line)
+\node[anchor=north, yshift=7mm] at (sigleft_img) {\certLabelFont President};
+
+
+% --- Dean (Bottom Right) ---
+% Image position
+\coordinate (sigright_img) at ($(current page.south east) + (-7cm, 3.2cm)$);
+% Line position (Moved UP)
+\coordinate (sigright_line) at ($(current page.south east) + (-7cm, 4.0cm)$);
+
+% Line
+\draw[thick, color=gray!80] ($(sigright_line) - (3cm, 0)$) -- ($(sigright_line) + (3cm, 0)$);
+
+% Signature Image
+\node[anchor=south, yshift=-7mm] at (sigright_img) {
+    \includegraphics[width=6.5cm, keepaspectratio]{sig_dean.png}
+};
+% Label
+\node[anchor=north, yshift=7mm] at (sigright_img) {\certLabelFont Dean};
+
+
+% --- SEALS ---
+\node[anchor=center] at ($(current page.south east) + (-11cm, 4.5cm)$) {
+    \includegraphics[width=5cm]{seal_gold.png}
+};
+
+\node[anchor=center, rotate=-5, opacity=0.9] at ($(sigright_img) + (-11.7cm, 1.3cm)$) {
+    \includegraphics[width=4.5cm]{stamp_registrar.png}
+};
+
+\end{tikzpicture}
+\end{document}
